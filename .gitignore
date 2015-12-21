@@ -1,0 +1,11 @@
+.idea
+__pycache__
+wsgi/static/
+wsgi/media/
+/static/
+/media/
+todo.txt
+project-console.bat
+db.sqlite3
+venv
+*.pyc

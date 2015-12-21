@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source ~/python/virtenv/venv/bin/activate
+cd ~/app-root/repo/wsgi
+
+echo "collecting static..."
+python manage.py collectstatic --noinput
+
+echo "making migrations..."
+#echo "skipped"
+python manage.py makemigrations
+
+echo "migrating..."
+#echo "skipped"
+python manage.py migrate auth
+python manage.py migrate
+
+echo "initing DB..."
+
+
+echo "Post deploy actionhook is finished"
