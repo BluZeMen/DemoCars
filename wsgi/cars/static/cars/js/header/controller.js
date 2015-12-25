@@ -4,30 +4,24 @@ define([
 	'marionette',
 	'./views',
 	], 
-	function(appMain, _, Marionette, collections, views) {
-
-
-		// var API = {
-		// 	listCars: function(criterion){
-		// 		updateList();
-		// 		console.log("list cars");
-		// 		//appMain.regions.main.show(clv);
-		// 		appMain.execute("set:active:header", "");
-		// 	},
-
-		// 	showCar: function(id){
-		// 		console.log("show car");
-		// 		//appMain.regions.main.show(cv);
-		// 		appMain.execute("set:active:header", "car");
-		// 	},
-
-		// 	editCar: function(id){
-		// 		console.log("edit car");
-		// 		//appMain.regions.main.show(cv);
-		// 		appMain.execute("set:active:header", "car");
-		// 	}
-		// };
+	function(appMain, _, Marionette, views) {
 		
-		return ;
+		var headerView;
+
+		return {
+			show: function(){
+				headerView = new views.Header();
+				appMain.regions.header.show(headerView);
+			},
+
+			setAbout: function(about){
+				console.log('set about');
+				headerView.setAbout(about.escape('body'));
+			},
+
+			setActive: function(headerUrl){
+				headerView.setActive(headerUrl);
+			},
+		};
 	}
 );

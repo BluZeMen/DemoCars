@@ -6,24 +6,21 @@ define([
 	'./controller'
 	], 
 	function(appMain, _, Marionette, views, controller) {
-		appMain.module("aboutApp", function(about, appMain){
+		appMain.module("appAbout", function(about, appMain){
 			var Router =  Marionette.AppRouter.extend({
 				appRoutes: {
-					'about-us' : 'aboutUs'
+					'about-us' : 'show'
 				}
 			});
 
-			appMain.on('about:edit', function(){
-				controller.editPage();
-				console.log('controller.editPage();');
-			});
-
-			appMain.on('about:save', function(){
-				controller.savePage();
-				console.log('controller.savePage();');
-			});
-
+			appMain.vent.bind('require:about:update', controller.fetchAbout);
+			
 			about.on('start', function(){
+				appMain.regions.main.on("show", function(view, region, options){
+				  	view.bind('about:edit', controller.editPage);
+					view.bind('about:save', controller.savePage);
+				});
+
 				new Router({
 					controller: controller
 				});
@@ -31,6 +28,6 @@ define([
 			});
 		});
 
-		return appMain.aboutApp;
+		return appMain.appAbout;
 	}
 );

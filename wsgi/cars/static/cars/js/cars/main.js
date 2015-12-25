@@ -12,31 +12,43 @@ define([
 		var Router =  Marionette.AppRouter.extend({
 			appRoutes: {
 				'(/filter/criterion::criterion)' : 'listCars',
+				'car/create': 'createCar',
 				'car/:id': 'showCar',
 				'car/:id/edit': 'editCar',
 				'car/:id/delete': 'deleteCar',
-				'car/create': 'createCar'
 			}
 		});
 
-		appMain.on("car:show", function(id){
-			//appMain.navigate("car/" + id);
-			controller.showCar(id);
-		});
-
-		appMain.on("car:edit", function(id){
-			//appMain.navigate("car/" + id + "/edit");
-			controller.editCar(id);
-		});
-
-		appMain.on("car:delete", function(id){
-			//appMain.navigate("car/" + id + "/delete");
-			controller.editCar(id);
-		});
-		
 		appMain.on("before:start", function(){
 			console.log('init cars');
-			//appMain.header.show(header);
+
+			appMain.regions.main.on("show", function(view, region, options){
+				//view.bind('childview:car:list', controller.listCars);
+				view.on('childview:car:show', function(e){
+					controller.showCar(e.model.id);
+					appMain.navigate('/car/'+e.model.id);
+				});
+				view.on('childview:car:edit', function(e){
+					controller.editCar(e.model.id);
+					appMain.navigate('/car/'+e.model.id+'/edit');
+				});
+				view.on('car:edit', function(e){
+					controller.editCar(e.model.id);
+					appMain.navigate('/car/'+e.model.id+'/edit');
+				});
+				view.on('childview:car:delete', function(e){
+					console.log('delete', e);
+					controller.deleteCar(e.model.id);
+				});
+				view.on('car:delete', function(e){
+					console.log('delete', e);
+					controller.deleteCar(e.model.id);
+				});
+				view.on('car:save', controller.saveCar);
+				view.on('car:load:image', controller.loadImage);
+			});
+
+			
 			new Router({
 				controller: controller
 			});

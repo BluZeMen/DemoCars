@@ -11,13 +11,16 @@ define([
 			tagName: 'header',
 			className: 'row',
 			template: headerTpl,
-			ui: {
-				about: '#header-about'
-			},
 
 			setActive: function(name){
-				this.$('li').removeClass('active');
-				this.$('li[href="#'+name+'"]').addClass('active');
+				this.$('nav li.active').removeClass('active');
+				this.$('nav li[href="#'+name+'"]').addClass('active');
+			},
+
+			setAbout: function(text){
+				var toDisplay = text.slice(0, 150)+'...';
+				this.$('#header-about').text(toDisplay);
+				this.$('#header-about').removeClass('hidden');
 			}
 		});
 

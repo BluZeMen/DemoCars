@@ -1,26 +1,51 @@
-<div class="control-group">
-	<label for="car-model" class="control-label">First name:</label>
-	<input id="car-model" name="model" type="text" value="<%- model %>"/>
-	<button class="btn js-submit">Add photo</button>
+<div class="row">
+	<div class=" col-xs-4">
+		<div class="thumbnail">
+			<img src="<%= mediaUrl() %>" alt="My Image" />
+			<div class="caption">
+				<h3>Thumbnail label</h3>
+				<p>Lalalala</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-4">
+		<div class="thumbnail">
+			<img src="<%= mediaUrl() %>" alt="My Image" />
+			<div class="caption">
+				<h3>Thumbnail label</h3>
+				<p>Lalalala</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-4">
+		<div class="thumbnail">
+			<img src="<%= mediaUrl() %>" alt="My Image" />
+			<div class="caption">
+				<h3>Thumbnail label</h3>
+				<p>Lalalala</p>
+			</div>
+		</div>
+	</div>
 </div>
-<div class="control-group">
-	<label for="car-model" class="control-label">First name:</label>
-	<input id="car-model" name="model" type="text" value="<%- model %>"/>
+<div class="row">
+	<p class="col-xs-12">
+		Model: <%= model %>
+	</p>
+	<p class="col-xs-12">
+		Year: <%= price %>
+	</p>
+	<p class="col-xs-12">
+		Created At: <%= created_at %>
+	</p>
+	<p class="col-xs-12">
+		Description: <%= description %>
+	</p>
 </div>
-<div class="control-group">
-	<label for="car-price" class="control-label">Price:</label>
-	<input id="car-price" name="price" type="number" value="<%- price %>"/>
+<div class="row control-group">
+	<button class="btn btn-primary js-edit col-xs-1">Edit</button>
+	<button class="btn btn-default js-delete col-xs-1">Delete</button>
 </div>
-<div class="control-group">
-	<label for="car-description" class="control-label">Description:</label>
-	<input id="car-description" name="description" type="number" value="<%- description %>"/>
-</div>
-<div class="control-group">
-	<label for="car-year" class="control-label">Year:</label>
-	<input id="car-year" name="year" type="number" value="<%- year %>"/>
-</div>
-<div class="control-group">
-	<label for="car-created-at" class="control-label">Year:</label>
-	<input id="car-created-at" name="year" type="text" value="<%- created_at %>"/>
-</div>
-<button class="btn js-edit">Edit</button>
+
+

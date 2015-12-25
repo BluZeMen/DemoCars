@@ -7,43 +7,46 @@ define([
 	], 
 	function(appMain, _, Marionette, $,
 			 headerTpl) {
-		appMain.module("about.view", function(View, appMain){
-			View.AboutUs = Marionette.ItemView.extend({
-				tagName: 'div',
-				className: 'row',
-				template: headerTpl,
-				editMode: false,
+		var AboutUs = Marionette.ItemView.extend({
+			tagName: 'div',
+			className: 'row',
+			template: headerTpl,
+			editMode: false,
 
-				events: {
-			    	'click .btn': 'clickChange',
-			    },
+			events: {
+		    	'click .btn': 'clickChange',
+		    },
 
-			    clickChange: function(e){
-			    	e.preventDefault();
-			    	if(this.editMode){
-			    		this.trigger('about:save', this.model);
-			    	}else{
-			    		this.trigger('about:edit', this.model);
-			    	}
-			    	console.log('Change edti mode: ', this.editMode);
-			    },
+		    clickChange: function(e){
+		    	e.preventDefault();
+		    	if(this.editMode){
+		    		this.trigger('about:save', this.model);
+		    	}else{
+		    		this.trigger('about:edit', this.model);
+		    	}
+		    },
 
-			    setEditable: function(editable){
-					if(editable){
-						this.$('.btn').text('Save');
-						this.$('#about').attr('contenteditable', 'true');
-						this.editMode = true;
-					}else{
-						this.$('.btn').text('Edit');
-						this.$('#about').attr('contenteditable', 'false');
-						this.editMode = false;
-					}
-			    },
+		    getBody: function(){
+		    	return this.$('#about').text();
+		    },
 
-			});
+		    setEditable: function(editable){
+				if(editable){
+					this.$('.btn').text('Save');
+					this.$('#about').attr('contenteditable', 'true');
+					this.$('.panel-default').removeClass('panel-default').addClass('panel-success');
+					this.editMode = true;
+				}else{
+					this.$('.btn').text('Edit');
+					this.$('#about').attr('contenteditable', 'false');
+					this.$('.panel-success').removeClass('panel-success').addClass('panel-default');
+					this.editMode = false;
+				}
+		    },
+
 		});
 
 		return {
-			AboutUs: appMain.about.view.AboutUs
+			AboutUs: AboutUs
 		};
 });

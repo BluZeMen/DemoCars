@@ -1,55 +1,50 @@
 define([
 	'appMain',
+	'./main',
 	'underscore',
 	'marionette',
 	'./models',
 	'./views',
+	'./main'
 	], 
-	function(appMain, _, Marionette, models, views) {
+	function(appMain, aboutApp, _, Marionette, models, views, aboutApp) {
 
-		var model = new models.AboutUs();
-		
-		var viewOptions = {
-			model : model
-		};
+		var view, model = new models.AboutUs();
 
-		var viewAbout = new views.AboutUs(viewOptions);
+		return {
 
-		var updateAbout = function(onFetch){
-			appMain.trigger("about:fetching", model);
-			model.fetch({ success: onFetch });
-			return viewAbout = new views.AboutUs(viewOptions);
-		};
+			fetchAbout: function(){
+				model.fetch();
+				console.log('fetched by req');
+			},
 
-		updateAbout();
-
-		console.log(viewAbout);
-
-		var API = {
-
-			view: function(){
-				return viewAbout;
+			show: function(){
+				appMain.trigger("about:fetching", model);
+				model.fetch({ success: function(){
+					view = new views.AboutUs({ model: model});
+					appMain.regions.main.show(view);
+				}});
+				appMain.execute("set:active:header", "/about-us");
 			},
 
 			editPage: function(){
-				console.log("edit about page");
-				viewAbout.setEditable(true);
+				//console.log("edit about page");
+				if(view){
+					view.setEditable(true);
+				}
 				//appMain.execute("set:active:header", "/car");
 			},
 
 			savePage: function(){
-				console.log("edit about page");
-				viewAbout.setEditable(false);
+				//console.log("edit about page");
+				if(view){
+					view.setEditable(false);
+					model.set('body', view.getBody());
+					model.save();
+				}
 				//appMain.execute("set:active:header", "/car");
-			},
-
-			aboutUs: function(){
-				updateAbout();
-				appMain.regions.main.show(viewAbout);
 			}
 
 		};
-		
-		return API;
 	}
 );

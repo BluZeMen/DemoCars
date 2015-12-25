@@ -1,0 +1,70 @@
+
+<div class="row">
+	<div class=" col-xs-4">
+		<div class="thumbnail">
+			<img src="<%= mediaUrl() %>" alt="My Image" />
+			<div class="caption">
+				<p>
+					<a class="btn js-delete-img" data-toggle="tooltip" title="Delete">
+					<span class="glyphicon glyphicon-trash"> Delete</a>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-4">
+		<div class="thumbnail">
+			<img src="<%= mediaUrl() %>" alt="My Image" />
+			<div class="caption">
+				<p>
+					<a class="btn js-delete-img" data-toggle="tooltip" title="Delete">
+					<span class="glyphicon glyphicon-trash"> Delete</a>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-4">
+		<div class="thumbnail">
+			<img src="<%= mediaUrl() %>" alt="My Image" />
+			<div class="caption">
+				<p>
+					<a class="btn js-delete-img" data-toggle="tooltip" title="Delete">
+					<span class="glyphicon glyphicon-trash"> Delete</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row control-group">
+	<input type="file" class="btn js-load-image col-xs-3" id="image-input">
+	<button class="btn js-load-image col-xs-1">Load image</button>
+</div>
+<div class="row js-form">
+	<div class="control-group">
+		<label for="car-model" class="control-label col-xs-2">Model: </label>
+		<input id="car-model" name="model" type="text" value="<%= model %>"/>
+	</div>
+	<div class="control-group">
+		<label for="car-price" class="control-label col-xs-2">Price: </label>
+		<input id="car-price" name="price" type="number" value="<%= price %>"/>
+	</div>
+	<div class="control-group">
+		<label for="car-year" class="control-label col-xs-2">Year: </label>
+		<input id="car-year" name="year" type="number" value="<%= year %>"/>
+	</div>
+	<div class="control-group">
+		<label for="car-created-at" class="control-label col-xs-2">Created At: </label>
+		<input id="car-created-at" name="created_at" type="text" value="<%= created_at %>"/>
+	</div>
+	<div class="control-group">
+		<label for="car-description" class="control-label col-xs-2">Description: </label>
+		<textarea name="description" id="description" rows="3"><%= description %></textarea>
+	</div>
+</div>
+<hr>
+<div class="row control-group">
+	<button class="btn btn-primary js-save col-xs-1">Save</button>
+	<button class="btn btn-default js-delete col-xs-1">Delete</button>
+</div>
+

@@ -6,9 +6,10 @@ requirejs.config({
     //config is relative to the baseUrl, and
     //never includes a ".js" extension since
     //the paths config could be for a directory.
-    packages: ['cars', 'header', 'about'],
+    packages: ['cars', 'header', 'about', 'dialog'],
     paths: {
         jquery: 'lib/jquery',
+        'jquery-ui': 'lib/jquery-ui',
         bootstrap: 'lib/bootstrap',
         underscore: 'lib/underscore',
         backbone: 'lib/backbone',
@@ -33,6 +34,7 @@ requirejs.config({
         jquery: {
             exports: '$'
         },
+        "jquery-ui": ["jquery"],
         bootstrap: {
             deps: ['jquery']
         },
@@ -46,7 +48,7 @@ requirejs.config({
 
 
 // Start the main app logic.
-requirejs(['appMain', 'header', 'cars', 'about'],
+requirejs(['appMain', 'header', 'cars', 'about', 'dialog'],
 function (appMain) {
     appMain.start();
 });

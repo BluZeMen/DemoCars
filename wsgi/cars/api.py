@@ -1,5 +1,7 @@
 from tastypie.serializers import Serializer
 from tastypie.resources import ModelResource
+from tastypie.authorization import DjangoAuthorization
+from tastypie.authentication import BasicAuthentication
 from tastypie.api import Api
 from .models import Car, Page
 
@@ -17,6 +19,9 @@ class CarResource(ModelResource):
 		allowed_methods = ['get', 'post', 'delete', 'put']
 		always_return_data = True
 		serializer = CarSerializer()
+		authentication = BasicAuthentication()
+		authorization = DjangoAuthorization() 
+
 
 	def dehydrate(self, bundle):
 		photos = [p.image for p in bundle.obj.photo]
@@ -31,6 +36,9 @@ class PageResource(ModelResource):
 		allowed_methods = ['get', 'post', 'put']
 		always_return_data = True
 		detail_uri_name = 'slug'
+		excludes = ['slug']
+		authentication = BasicAuthentication()
+		authorization = DjangoAuthorization()
 
 
 

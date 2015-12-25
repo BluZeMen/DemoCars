@@ -17,7 +17,7 @@ class Car(models.Model):
 		return Photo.objects.filter(car=self)
 	model = models.CharField(max_length=100, unique=True)
 	price = models.FloatField(default=0)
-	desciption = models.TextField(default='')
+	description = models.TextField(default='')
 	date = models.DateField()
 	created_at = models.CharField(max_length=255, default='')
 

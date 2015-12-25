@@ -1,4 +1,4 @@
-define(['marionette'],
+define(['marionette', 'jquery-ui'],
 function(Marionette){
     var appMain = new Marionette.Application();
 
@@ -26,6 +26,7 @@ function(Marionette){
         }
     };
 
+    
     appMain.on('before:start', function(){
         var RegionContainer = Marionette.LayoutView.extend({
             el: "#app-container",
@@ -33,38 +34,21 @@ function(Marionette){
             regions: {
                 header: '#header',
                 main: '#main',
-                dialog: '#dialog'
+                dialog: appMain.appDialog.DialogRegion.extend({
+                    el: '#dialog'
+                })
             }
         });
         appMain.regions = new RegionContainer();
-
-        appMain.regions.dialog.onShow = function(view){
-            var self = this;
-            var closeDialog = function(){
-              self.stopListening();
-              self.empty();
-              self.$el.dialog('destroy');
-            };
-
-            this.listenTo(view, 'dialog:close', closeDialog);
-
-            this.$el.dialog({
-              modal: true,
-              title: view.title,
-              width: 'auto',
-              close: function(e, ui){
-                closeDialog();
-              }
-            });
-        };
+        
     });
 
     appMain.on('start', function(){
       if(Backbone.history){
-        require(['cars', 'header', 'about'], function () {
+        require(['cars', 'header', 'about', 'dialog'], function () {
           Backbone.history.start();
           if(appMain.getCurrentRoute() === ""){
-            appMain.trigger("car:list");
+            appMain.vent.trigger("car:list");
           }
         });
       }

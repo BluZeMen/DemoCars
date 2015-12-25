@@ -25,7 +25,6 @@ define([
 
 		var Car = Backbone.Model.extend({
 			defaults: {
-				id: 0,
 				photo: [],
 				model: '',
 				price: -1,
@@ -36,7 +35,14 @@ define([
 
 			urlRoot: '/api/v1/car/',
 			url : function(){
-				return this.urlRoot + this.id + '?format=json';
+				if(this.id){
+					return this.urlRoot + this.id + '/?format=json';
+				}
+				return this.urlRoot;
+			},
+
+			urlCreate: function(){
+				return this.urlRoot;
 			},
 			
 			searchQueryMatch: function(query){
@@ -52,6 +58,18 @@ define([
 				}
 				return res;
 			}
+		});
+
+		var Photo = Backbone.Model.extend({
+			defaults: {
+				src: ''
+			},
+
+			urlRoot: '/api/v1/car/',
+			url : function(){
+				return this.urlRoot + this.id + '?format=json';
+			},
+			
 		});
 
 		var AboutUs = Backbone.Model.extend({
@@ -76,6 +94,7 @@ define([
 	return {
 		server: serverInfo,
 		Car: Car,
+		Photo: Photo,
 		SearchQuery: SearchQuery,
 		AboutUs: AboutUs
 	};
