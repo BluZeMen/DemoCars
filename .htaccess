@@ -1,4 +1,0 @@
-RewriteEngine On
-
-RewriteCond %{HTTPS} !=on
-RewriteRule ^admin/.*$ https://%{HTTP_HOST}%{REQUEST} [R=301,L]

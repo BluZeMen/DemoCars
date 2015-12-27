@@ -1,0 +1,49 @@
+<div class="row images-container">
+	<% _.each(photo, function(ph){ %>
+	<div class="col-lg-4 col-md-4 col-xs-1">
+		<div class="thumbnail">
+			<img class="preview" src="<%= mediaUrl(ph.url) %>" alt="My Image" />
+			<div class="caption">
+				<p>
+					<button class="btn js-delete-image" photoId="<%= ph.id %>" title="Delete">
+					<span class="glyphicon glyphicon-trash"></span> Delete</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<% }); %>
+</div>
+<div class="row control-group">
+	<form method="post" enctype="multipart/form-data">
+		<input type="file" name="image" class="js-load-image col-xs-3" id="image-input">
+	</form>
+	<button class="btn js-load-image col-xs-1">Load image</button>
+</div>
+<div class="row js-form">
+	<div class="control-group">
+		<label for="car-model" class="control-label col-xs-2">Model: </label>
+		<input id="car-model" name="model" type="text" value="<%= model %>"/>
+	</div>
+	<div class="control-group">
+		<label for="car-price" class="control-label col-xs-2">Price: </label>
+		<input id="car-price" name="price" type="number" value="<%= price %>"/>
+	</div>
+	<div class="control-group">
+		<label for="car-year" class="control-label col-xs-2">Year: </label>
+		<input id="car-year" name="year" type="number" value="<%= year %>"/>
+	</div>
+	<div class="control-group">
+		<label for="car-created-at" class="control-label col-xs-2">Created At: </label>
+		<input id="car-created-at" name="createdAt" type="text" value="<%= createdAt %>"/>
+	</div>
+	<div class="control-group">
+		<label for="car-description" class="control-label col-xs-2">Description: </label>
+		<textarea name="description" id="description" rows="3"><%= description %></textarea>
+	</div>
+</div>
+<hr>
+<div class="row control-group">
+	<button class="btn btn-primary js-save col-xs-1">Save</button>
+	<button class="btn btn-default js-delete col-xs-1">Delete</button>
+</div>
+

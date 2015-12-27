@@ -1,0 +1,19 @@
+<ul class="pagination">
+  <li>
+    <a href="#" aria-label="Previous" class="js-page-prev">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  <% for(var p = 1; p <= pagesCnt; p++){ %>
+	<% if(p == currentPage){ %>
+<li class="active"><a href="#"><%= p %></a></li>
+	<% }else{ %>
+<li><a href="#" class="js-page-sel"><%= p %></a></li>
+	<% } %>
+  <% } %>
+  <li>
+    <a href="#" aria-label="Next" class="js-page-next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+</ul>

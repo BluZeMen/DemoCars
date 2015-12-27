@@ -1,0 +1,29 @@
+<div class="row images-container">
+	<% _.each(photo, function(ph){ %>
+	<div class="col-lg-4 col-md-4 col-xs-1">
+		<div class="thumbnail">
+			<img class="preview" src="<%= mediaUrl(ph.url) %>" alt="My Image" />
+		</div>
+	</div>
+	<% }); %>
+</div>
+<div class="row">
+	<p class="col-xs-12">
+		Model: <%= model %>
+	</p>
+	<p class="col-xs-12">
+		Year: <%= price %>
+	</p>
+	<p class="col-xs-12">
+		Created At: <%= createdAt %>
+	</p>
+	<p class="col-xs-12">
+		Description: <%= description %>
+	</p>
+</div>
+<div class="row control-group">
+	<button class="btn btn-primary js-edit col-xs-1">Edit</button>
+	<button class="btn btn-default js-delete col-xs-1">Delete</button>
+</div>
+
+

@@ -1,0 +1,20 @@
+<td><%= id %></td>
+<td>
+	<!--<img src="http://placehold.it/350x150">-->
+	<img class="preview" src="<%= photo[0] ? mediaUrl(photo[0].url): mediaUrl() %>">
+</td>
+<td><%= model %></td>
+<td><%= price %>$</td>
+<td>
+	<div class="btn-group">
+		<a class="btn js-show" data-toggle="tooltip" title="Show">
+			<span class="glyphicon glyphicon-file"></span>
+		</a>
+		<a class="btn js-edit" data-toggle="tooltip" title="Edit">
+			<span class="glyphicon glyphicon-pencil">
+		</a>
+		<a class="btn js-delete" data-toggle="tooltip" title="Delete">
+			<span class="glyphicon glyphicon-trash">
+		</a>
+	</div>
+</td>
