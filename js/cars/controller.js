@@ -25,6 +25,8 @@ define([
 			carsList.invoke('save');
 		}
 
+		// console.log(carsList);
+
 		// comparators for sorting carsList
 		var comparators = {
 			cheaper: function(c1, c2){

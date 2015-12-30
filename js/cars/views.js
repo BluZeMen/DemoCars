@@ -148,11 +148,7 @@ define([
 			},
 
 		    triggers: {
-				'click .btn.js-create':  {
-					event: 'car:create dialog:close',
-					preventDefault: true, 
-					stopPropagation: true
-				},
+				'click .btn.js-create': 'car:create dialog:close',
 				'click .btn.js-cancel': 'dialog:close',
 			},
 

@@ -41,6 +41,7 @@ define([
 			show: function(){
 				appMain.trigger("about:fetching", model);
 				model.fetch({ success: function(){
+					console.log('!!!!!!!!show about');
 					appMain.vent.trigger('about:updated', model);
 					view = new views.AboutUs({ model: model});
 					appMain.regions.main.show(view);

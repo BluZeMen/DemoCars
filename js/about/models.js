@@ -17,7 +17,7 @@ define([
 		*/
 		var AboutUs = Backbone.Model.extend({
 			defaults: {
-				body: 'Some default about content',
+				body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
 				bodyLenMinLimit: 200
 			},
 

@@ -65,7 +65,7 @@ define([
 				// paginator
 				view.on('childview:paginator:next', controller.paginatorNext);
 				view.on('childview:paginator:prev', controller.paginatorPrev);
-				view.on('paginator:goto', controller.paginatorGoto);
+				view.on('childview:paginator:goto', controller.paginatorGoto);
 			});
 
 			
