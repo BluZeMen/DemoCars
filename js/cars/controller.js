@@ -135,7 +135,7 @@ define([
 			loadImage: function(e){
 				if(!e.path)
 					return
-				console.log('load image:', e);
+				// idea of "id" is grows up from backend - images stored in a individual table.
 				e.model.addPhoto(_.random(9999999), e.path);
 				e.model.save();
 
@@ -143,10 +143,8 @@ define([
 			},
 
 			deleteImage: function(e){
-				console.log('del img:', e);
 				e.model.delPhoto(e.photoId);
 				e.model.save();
-
 				controller.editCar(e.model.id);
 			},
 
@@ -159,7 +157,6 @@ define([
 
 				var car = carsList.get(id);
 				
-				/*title, body, capationConfirm, capationCancel*/
 				appMain.vent.trigger('dialog:show:confirm',{
 					title: 'Confirm delete',
 					body: ('You are trying to delete car ' +car.get('model')+ '. Are you shure?'),
@@ -178,18 +175,25 @@ define([
 				dial.on('car:create', function(e){
 					var data = dial.getData();
 					
+					carsList.fetch(); // getting a actual list of cars
+
+					// check, if this model already exists
 					var hits = carsList.where({model: data.model});
 					if(hits.length){
-						console.log('This model name is alredy exists! Try another model name');
+						dial.trigger('dialog:close');
+						appMain.vent.trigger('dialog:show:alert',{
+							title: 'Error',
+							body: 'This model name is alredy exists! Try another model name',
+						});
 						return;
 					}
 
+					// getting the id of new entry in table of cars
 					var ids = carsList.pluck('id');
 					ids.push(0);
 					var id = _.max(ids) + 1;
 					data['id'] = id;
-
-					carsList.fetch();
+					
 					var car = new models.Car(data);
 					carsList.add(car);
 					car.save();

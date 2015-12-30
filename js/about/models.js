@@ -24,16 +24,12 @@ define([
 			localStorage:  new Backbone.LocalStorage('aboutStorage'),
 			
 			validate: function(attrs, options){
-
 				if(!attrs.body){
-					return { code: 1, sender: this, 
-						msg : 'Body of about page is empty: '+attrs.body };
+					return 'Body of about page is empty: ' + attrs.body;
 				}
-
-				if(attrs.body.length < this.get('bodyLenMinLimit')){
-					return { code: 2, sender: this, 
-						msg : 'Body of about page is too short, less than '+
-							   this.get('bodyLenMinLimit')+' symbols' };
+				if(attrs.body.length < attrs.bodyLenMinLimit){
+					return 'Body of about page is too short, less than '+
+							   attrs.bodyLenMinLimit + ' symbols';
 				}
 			}
 			

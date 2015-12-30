@@ -93,7 +93,7 @@ define([
 				e.preventDefault();
 				var page = +$(e.target).text();
 				console.log('page = ', page);
-				this.trigger('paginator:goto', page);
+				this.trigger('paginator:goto', page); // why not catching?
 			},
 
 

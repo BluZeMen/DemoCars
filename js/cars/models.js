@@ -35,8 +35,8 @@ define([
 		});
 
 		var serverInfo = {
-			static_url: '/',
-			media_url: '/media/',
+			static_url: '',
+			media_url: 'media/',
 		};
 
 	return {

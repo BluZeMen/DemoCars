@@ -6,6 +6,7 @@ define([
 	'./models',
 	'./views',
 	'./main',
+	'dialog',
 	], 
 	function(appMain, aboutApp, _, Marionette, models, views, aboutApp) {
 
@@ -17,6 +18,15 @@ define([
 			console.log(model.toJSON());
 			model.save();
 		}});
+
+		// handling validation errors
+		model.on('invalid', function(model, error){
+			appMain.vent.trigger('dialog:show:alert',{
+				title: 'Error',
+				body: error
+			});
+		});
+
 
 		return {
 
@@ -51,8 +61,11 @@ define([
 				if(view){
 					view.setEditable(false);
 					model.set('body', view.getBody());
-					model.save();
-					appMain.vent.trigger('about:updated', model);
+					model.save({
+						success: function(){
+							appMain.vent.trigger('about:updated', model);
+						}				
+					});
 				}
 				//appMain.execute("set:active:header", "/car");
 			}

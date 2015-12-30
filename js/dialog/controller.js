@@ -11,13 +11,13 @@ define([
 				var DialogConfirm = Backbone.Model.extend({});
 
 				var view = new views.DialogConfirmView({
-					title: title,
 					model: new DialogConfirm({
 						body: body,
 						capationConfirm: (capationConfirm || 'Confirm'),
 						capationCancel: (capationCancel || 'Cancel')
 					})
 				});
+				view.title = title;
 				appMain.regions.dialog.on("show", function(view){
 					//view.bind('childview:car:list', controller.listCars);
 					if(onConfirm){
@@ -34,11 +34,11 @@ define([
 				var DialogAlert = Backbone.Model.extend({});
 
 				var view = new views.DialogAlertView({
-					title: title,
 					model: new DialogAlert({
 						body: body,
 					})
 				});
+				view.title = title;
 				appMain.regions.dialog.on("show", function(view){
 					//view.bind('childview:car:list', controller.listCars);
 					if(onOk){

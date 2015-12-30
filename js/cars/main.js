@@ -11,7 +11,7 @@ define([
 
 		var Router =  Marionette.AppRouter.extend({
 			appRoutes: {
-				'(/filter/criterion::criterion)' : 'listCars',
+				'' : 'listCars',
 				'car/create': 'createCar',
 				'car/:id': 'showCar',
 				'car/:id/edit': 'editCar',
@@ -23,7 +23,6 @@ define([
 			console.log('init cars');
 
 			appMain.regions.main.on("show", function(view, region, options){
-				//view.bind('childview:car:list', controller.listCars);
 
 				view.on('childview:car:show', function(e){
 					controller.showCar(e.model.id);
@@ -50,19 +49,20 @@ define([
 				view.on('image:load', controller.loadImage);
 				view.on('image:delete', controller.deleteImage);
 
+				// sort
 				var wrapSort = function(sortType){
 					return function(){
 						console.log('sort clicked:', sortType);
 						controller.listSort(sortType);
 					}
 				};
-
 				view.on('childview:sort:default', wrapSort());
 				view.on('childview:sort:cheaper', wrapSort('cheaper'));
 				view.on('childview:sort:expensive', wrapSort('expensive'));
 				view.on('childview:sort:az', wrapSort('az'));
 				view.on('childview:sort:za', wrapSort('za'));
 
+				// paginator
 				view.on('childview:paginator:next', controller.paginatorNext);
 				view.on('childview:paginator:prev', controller.paginatorPrev);
 				view.on('paginator:goto', controller.paginatorGoto);
