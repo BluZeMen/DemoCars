@@ -10,10 +10,8 @@ requirejs.config({
     paths: {
         jquery: 'lib/jquery',
         localstorage: "lib/backbone.localstorage",
-        'localstorage-config': 'utils/localstorage-config',
         'jquery-ui': 'lib/jquery-ui',
         bootstrap: 'lib/bootstrap',
-        'jqueryrange': 'lib/jquery.range',
         underscore: 'lib/underscore',
         backbone: 'lib/backbone',
         marionette: 'lib/backbone.marionette',

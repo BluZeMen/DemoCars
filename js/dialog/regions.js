@@ -2,6 +2,7 @@ define([
 	'backbone',
 	'marionette',
 	'jquery',
+	'jquery-ui',
 	], 
 	function(Backbone, Marionette, $) {
 
