@@ -75,6 +75,7 @@ define([
 
 			events:{
 				'click a.js-page-sel': 'onGoto',
+				//'click a.js-page-prev': 'onPrev',
 			},
 
 			templateHelpers: function(){
@@ -91,9 +92,9 @@ define([
 
 			onGoto: function(e){
 				e.preventDefault();
+				e.stopPropagation();
 				var page = +$(e.target).text();
-				console.log('page = ', page);
-				this.trigger('paginator:goto', page); // why not catching?
+				this.triggerMethod('paginator:goto', page); // why not catching?
 			},
 
 

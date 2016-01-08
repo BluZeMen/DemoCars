@@ -14,12 +14,14 @@ define([
 
 			setActive: function(name){
 				this.$('nav li.active').removeClass('active');
-				this.$('nav li[href="#'+name+'"]').addClass('active');
+				this.$('nav li:has([href="#'+name+'"])').addClass('active');
 			},
 
 			setAbout: function(text){
-				var toDisplay = text.slice(0, 150)+'...';
-				this.$('#header-about').text(toDisplay);
+				var aboutLen = 150;
+				var ending = text.length > aboutLen ? '...' : '';
+				var txtToDisplay = text.slice(0, aboutLen) + ending;
+				this.$('#header-about').text(txtToDisplay);
 				this.$('#header-about').removeClass('hidden');
 			}
 		});

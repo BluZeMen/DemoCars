@@ -15,10 +15,7 @@ define([
 			},
 
 			setAbout: function(about){
-				console.log('set about');
-				if(!appMain.regions) return;
-				if(!headerView) controller.show();
-				headerView.setAbout(about.escape('body'));
+				if(headerView) headerView.setAbout(about.get('body'));
 			},
 
 			setActive: function(headerUrl){

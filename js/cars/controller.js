@@ -25,8 +25,6 @@ define([
 			carsList.invoke('save');
 		}
 
-		// console.log(carsList);
-
 		// comparators for sorting carsList
 		var comparators = {
 			cheaper: function(c1, c2){
@@ -77,8 +75,7 @@ define([
 				sortOrder = newSortOrder;
 			},
 
-			paginatorGoto: function(page){
-				console.log('goto', page);
+			paginatorGoto: function(view, page){
 				currentPage = page;
 				controller.listCars();
 			},
@@ -94,22 +91,18 @@ define([
 			},
 
 			showCar: function(id){
-				console.log("show car");
 				carsList.fetch();
 				appMain.regions.main.show(new views.CarInfo({ model: carsList.get(id)}));
 				appMain.execute("set:active:header", "/car/"+id);
 			},
 
 			editCar: function(id){
-				console.log("edit car");
-
 				carsList.fetch();
 				appMain.regions.main.show(new views.CarEdit({ model: carsList.get(id)}));
 				appMain.execute("set:active:header", "/car/"+id);
 			},
 
 			saveCar: function(e){
-				console.log('saving...');
 				var data = e.view.getData();
 				var test = e.model.clone();
 				test.set(data);

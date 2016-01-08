@@ -5,22 +5,9 @@ define([
 	'localstorage',
 	], 
 	function(_, Backbone, models) {
-		var carsStorage; 
-		/*
-		localStorage: (function(){
-			if(!carsStorage){
-				carsStorage = new Backbone.LocalStorage('carsStorage');
-			}
-			return carsStorage;
-		}()),
-		*/
 		var CarsList = Backbone.Collection.extend({
 			model: models.Car,
 			localStorage: new Backbone.LocalStorage('carsStorage'),
-
-			initialize: function(){
-				//this.fillRandom(3);
-			},
 
 			// just for testing
 			fillRandom: function(cnt){
@@ -42,7 +29,6 @@ define([
 					var data = this.createRandomData(names, 
 						literals, descriptions, places, photos);
 					data['id'] = i;
-					//console.log('di:', data);
 					cars.push(data);
 				}
 				

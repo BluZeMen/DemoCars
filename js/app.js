@@ -1,4 +1,4 @@
-define(['marionette', 'jquery-ui'],
+define(['marionette'],
 function(Marionette){
     var appMain = new Marionette.Application();
 
@@ -45,6 +45,7 @@ function(Marionette){
 
     appMain.on('start', function(){
       if(Backbone.history){
+        //initializing all modules
         require(['cars', 'header', 'about', 'dialog'], function () {
           Backbone.history.start();
           if(appMain.getCurrentRoute() === ""){
