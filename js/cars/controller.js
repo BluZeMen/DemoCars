@@ -15,7 +15,19 @@ define([
 		var currentPage = 1;  // state of app: number of displayable page 
 		var carsPerPage = 4;  // config, cars per page 
 		var pagesCnt; // total count of pages
-		var sortOrder; // current sorting order of carsList
+		var query = new models.Query();
+		carsList.comparator = _.bind(query.collectionComparator, query);
+
+		query.on('change:order', function(){
+			console.log('on order change')
+			controller.listCars();
+		});
+
+		query.on('change:string', function(){
+			console.log('on query string change')
+			controller.listCars();
+		});
+
 
 		//
 		// this code for initial collection filling
@@ -25,54 +37,61 @@ define([
 			carsList.invoke('save');
 		}
 
-		// comparators for sorting carsList
-		var comparators = {
-			cheaper: function(c1, c2){
-				return c1.get('price') - c2.get('price');
-			},
-			expensive: function(c1, c2){
-				return c2.get('price') - c1.get('price');
-			},
-			az: function(c1, c2){
-				return c1.get('model').localeCompare(c2.get('model'));
-			},
-			za: function(c1, c2){
-				return c2.get('model').localeCompare(c1.get('model'));
-			},
-		};
+		var getPagesCnt = function(total, perPage){
+			var pagesCnt = total / perPage >> 0;
+			if(total % perPage){ // if page owerflow 
+				pagesCnt++;
+			}
+			return pagesCnt;
+		}
 
 		var controller = {
 
 			listCars: function(){
 				carsList.fetch({success: function(){
 					// pagination
-					pagesCnt = carsList.length / carsPerPage >> 0;
-					if(carsList.length % carsPerPage){ // if pages owerflow 
-						pagesCnt++;
+					pagesCnt = getPagesCnt(carsList.length, carsPerPage);
+
+					var filtred = carsList.filter(_.bind(query.viewFilter, query));
+					if(query.get('string')){
+						pagesCnt = getPagesCnt(filtred.length, carsPerPage);
+						if(currentPage >= pagesCnt){
+							currentPage = 1;
+						}
 					}
 
 					var viewOptions = {
 						collection : displayList,
 						currentPage: currentPage,
-						pagesCnt: pagesCnt
+						pagesCnt: pagesCnt,
 					};
-
+					
 					displayList.reset();
-					displayList.add(carsList.slice((currentPage-1)*carsPerPage, currentPage*carsPerPage));
+					displayList.add(filtred.slice((currentPage-1)*carsPerPage, currentPage*carsPerPage));
 					// viewing 
-					var view = new views.CarsList(viewOptions);
-					appMain.regions.main.show(view);
+					
+					if(appMain.regions.main.currentView){
+						appMain.regions.main.currentView.updateList(viewOptions);
+					}else{
+						var view = new views.QueriedCarsList(viewOptions);
+						appMain.regions.main.show(view);
+					}
+					//appMain.regions.main.currentView.setListFilter(viewFilter);
 				}});
 				appMain.execute("set:active:header", "/");
 			},
 
-			// setter for sorting ist
 			listSort: function(newSortOrder){
-				if(newSortOrder == sortOrder)
-					return;
-				carsList.comparator = comparators[newSortOrder];
-				controller.listCars();
-				sortOrder = newSortOrder;
+				console.log('listSort = ', newSortOrder);
+				var old = query.get('order');
+				if(old != newSortOrder){
+					query.set('order', newSortOrder);
+				}
+			},
+
+			queryStringChange: function( str){
+				console.log('qs new val:', str);
+				query.set('string', str);
 			},
 
 			paginatorGoto: function(view, page){

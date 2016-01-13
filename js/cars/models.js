@@ -4,6 +4,39 @@ define([
 	], 
 	function(_, Backbone, Store) {
 
+		var Query = Backbone.Model.extend({
+			defaults:{
+				string: '',
+				order: null
+			},
+
+			// Backbone.Collection.comparator compatible
+			collectionComparator: function(car1, car2){
+				return car1.compare(this, car2);
+			},
+
+			// _.filter() compatible
+			viewFilter: function (car, index, collection) {
+				return car.filter(this);
+			}
+		});
+
+		// comparators for sorting carsList
+		var comparators = {
+			cheaper: function(c1, c2){
+				return c1.get('price') - c2.get('price');
+			},
+			expensive: function(c1, c2){
+				return c2.get('price') - c1.get('price');
+			},
+			az: function(c1, c2){
+				return c1.get('model').localeCompare(c2.get('model'));
+			},
+			za: function(c1, c2){
+				return c2.get('model').localeCompare(c1.get('model'));
+			},
+		};
+
 		var Car = Backbone.Model.extend({
 			defaults: {
 				photo: [],
@@ -32,6 +65,21 @@ define([
 								 )
 						);
 			},
+
+			compare: function(query, car){
+				var val = 0;
+				if(query.get('order')){
+					val += comparators[query.get('order')](this, car);;
+				}
+				return val;
+				
+			},
+
+			filter: function(query){
+				// filter by model string matching
+				return this.get('model').toLowerCase().indexOf(query.get('string').toLowerCase()) >= 0;
+			},
+
 		});
 
 		var serverInfo = {
@@ -42,6 +90,7 @@ define([
 	return {
 		server: serverInfo,
 		Car: Car,
+		Query: Query,
 	};
 
 });

@@ -4,14 +4,14 @@ define([
 	'jquery',
 	'./models',
 	'tpl!./templates/cars-list-item.html',
+	'tpl!./templates/cars-list.html',
 	'tpl!./templates/car-info.html',
 	'tpl!./templates/car-create.html',
 	'tpl!./templates/car-edit.html',
-	'tpl!./templates/cars-table.html',
 	'tpl!./templates/paginator.html',
 	], 
 	function(_, Marionette, $, models,
-			 carsLiTpl, carInfoTpl, carCreateTpl, carEditTpl, carsTblTpl, pgrTpl) {
+			 carsLiTpl, carsLstTpl, carInfoTpl, carCreateTpl, carEditTpl, pgrTpl) {
 
 		// formatter func filename > url 
 		var mediaUrlFunc = function(mediaName){
@@ -46,20 +46,11 @@ define([
 
 
 		// list view of cars
-		var CarsTable = Marionette.CompositeView.extend({
+		var CarsList = Marionette.CollectionView.extend({
+			//tagName: 'tbody',
 			childView: CarsListItem,
 			emptyView: CarsListItemEmpty,
-			childViewContainer: 'tbody',
-			template: carsTblTpl,
-
-			triggers: {
-				'click .btn.js-default': 'sort:default',
-				'click .btn.js-cheaper': 'sort:cheaper',
-				'click .btn.js-expensive': 'sort:expensive',
-				'click .btn.js-az': 'sort:az',
-				'click .btn.js-za': 'sort:za',
-			}
-
+			
 		});
 
 
@@ -96,28 +87,71 @@ define([
 				var page = +$(e.target).text();
 				this.triggerMethod('paginator:goto', page); // why not catching?
 			},
-
-
 		});
 
 
 		// holder for homepage(cars list, sort, pagination)
-		var CarsList = Marionette.LayoutView.extend({
-			template: _.template('<div id="table"></div><hr><div id="paginator"></div>'),
+		var QueriedCarsList = Marionette.LayoutView.extend({
+			template: carsLstTpl,
 
 			regions:{
-				table: '#table',
+				list: 'tbody',
 				paginator: '#paginator'
 			},
 
+			triggers: {
+				'click .btn.js-default': 'sort:default',
+				'click .btn.js-cheaper': 'sort:cheaper',
+				'click .btn.js-expensive': 'sort:expensive',
+				'click .btn.js-az': 'sort:az',
+				'click .btn.js-za': 'sort:za',
+			},
+
+			events: {
+				'click .js-filter .btn': 'onButtonClick',
+				'keyup #searchQuery': 'onQueryStringChange',
+			},
+
+			queryString: '',
+
 			initialize: function(opts){
-				this.tableView = new CarsTable(opts);
-				this.paginatorView = new Paginator(opts);
+				this.initOpts = opts;
+
+				// to disable wrapping
+				this.list.attachHtml = function(view) {
+					// empty the node and append new view
+					//console.log('cn:', view.el.childNodes);
+					this.el.innerHTML="";
+					$(this.el).append(view.el.childNodes);
+				}
 			},
 
 			onShow: function(){
-				this.table.show(this.tableView);
-				this.paginator.show(this.paginatorView);
+				this.updateList();
+			},
+
+			updateList: function(opts){
+				if(opts){
+					this.initOpts = opts;
+				}
+				this.list.show(new CarsList(this.initOpts));
+				this.paginator.show(new Paginator(this.initOpts));
+			},
+
+			setListFilter: function(filterFunc){
+				this.list.currentView.filter = filterFunc;
+			},
+
+			onButtonClick: function(e){
+				this.$('.js-filter .btn').removeClass('active');
+				$(e.target).addClass('active');
+			},
+
+			onQueryStringChange: function(e){
+				this.queryString = $(e.target).val();
+				this.triggerMethod('sort:query', this.queryString);
+				e.preventDefault();
+				e.stopPropagation();
 			}
 
 		});
@@ -219,7 +253,7 @@ define([
 
 		return {
 			CarEdit: CarEdit,
-			CarsList: CarsList,
+			QueriedCarsList: QueriedCarsList,
 			CarInfo: CarInfo,
 			CarCreate: CarCreate
 		};

@@ -56,11 +56,12 @@ define([
 						controller.listSort(sortType);
 					}
 				};
-				view.on('childview:sort:default', wrapSort());
-				view.on('childview:sort:cheaper', wrapSort('cheaper'));
-				view.on('childview:sort:expensive', wrapSort('expensive'));
-				view.on('childview:sort:az', wrapSort('az'));
-				view.on('childview:sort:za', wrapSort('za'));
+				view.on('sort:default', wrapSort());
+				view.on('sort:cheaper', wrapSort('cheaper'));
+				view.on('sort:expensive', wrapSort('expensive'));
+				view.on('sort:az', wrapSort('az'));
+				view.on('sort:za', wrapSort('za'));
+				view.on('sort:query', controller.queryStringChange);
 
 				// paginator
 				view.on('childview:paginator:next', controller.paginatorNext);
