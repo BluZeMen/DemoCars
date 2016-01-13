@@ -41,7 +41,7 @@ define([
 		// designed for showing instead of collection, when no entities in collection
 		var CarsListItemEmpty = Marionette.ItemView.extend({
 			tagName: 'tr',
-			template: _.template('<td colspan="5"><h3>No car in base yet</h3><h4>Try to <a href="#/car/create">add one</a></h4></td>')
+			template: _.template('<td colspan="5"><h3>No cars by such criteria</h3><h4>Try to <a href="#/car/create">add one</a></h4></td>')
 		});
 
 
@@ -50,7 +50,6 @@ define([
 			//tagName: 'tbody',
 			childView: CarsListItem,
 			emptyView: CarsListItemEmpty,
-			
 		});
 
 
@@ -58,34 +57,61 @@ define([
 			tag: 'nav',
 			template: pgrTpl,
 
-			triggers: {
-				'click a.js-page-next': 'paginator:next',
-				'click a.js-page-prev': 'paginator:prev',
+			triggers:{
+				'click ul.pagination a': 'paginator:change',
 				'click .active a': 'paginator:active', 
 			},
 
 			events:{
+				'click a.js-page-next': 'onNext',
+				'click a.js-page-prev': 'onPrev',
 				'click a.js-page-sel': 'onGoto',
-				//'click a.js-page-prev': 'onPrev',
 			},
+
+			currentPage: 1,  // state of app: number of displayable page 
 
 			templateHelpers: function(){
 				return{
-					pagesCnt: this.pagesCnt,
+					getPagesCnt: this.getPagesCnt,
 					currentPage: this.currentPage,
 				}
 			},
 
 			initialize: function(opts){
-				this.currentPage = opts.currentPage;
-				this.pagesCnt = opts.pagesCnt;
+				this.itemsPerPage = opts.itemsPerPage;
+				this.itemsCnt = opts.collection.length;
+				this.getPagesCnt = _.bind(this.getPagesCnt, this);
+			},
+
+			getPagesCnt: function(){
+				var pagesCnt = this.itemsCnt / this.itemsPerPage >> 0;
+				if(this.itemsCnt % this.itemsPerPage){ // if page owerflow 
+					pagesCnt++;
+				}
+				return pagesCnt
 			},
 
 			onGoto: function(e){
 				e.preventDefault();
 				e.stopPropagation();
-				var page = +$(e.target).text();
-				this.triggerMethod('paginator:goto', page); // why not catching?
+				this.currentPage = +$(e.target).text();
+			},
+
+			onNext: function(){
+				if(this.currentPage < this.getPagesCnt()) this.currentPage++;
+			},
+
+			onPrev: function(){
+				if(this.currentPage > 1) this.currentPage--;
+			},
+
+			paginatorFilter: function(){
+				var self = this;
+				return function(child, index, collection){
+					var startIndex = (self.currentPage - 1) * self.itemsPerPage;
+					var endIndex = self.currentPage * self.itemsPerPage;
+					return index >= startIndex && index < endIndex;
+				};
 			},
 		});
 
@@ -112,15 +138,12 @@ define([
 				'keyup #searchQuery': 'onQueryStringChange',
 			},
 
-			queryString: '',
-
 			initialize: function(opts){
 				this.initOpts = opts;
 
 				// to disable wrapping
 				this.list.attachHtml = function(view) {
 					// empty the node and append new view
-					//console.log('cn:', view.el.childNodes);
 					this.el.innerHTML="";
 					$(this.el).append(view.el.childNodes);
 				}
@@ -134,12 +157,22 @@ define([
 				if(opts){
 					this.initOpts = opts;
 				}
-				this.list.show(new CarsList(this.initOpts));
-				this.paginator.show(new Paginator(this.initOpts));
-			},
 
-			setListFilter: function(filterFunc){
-				this.list.currentView.filter = filterFunc;
+				if(!this.initOpts.origCollection){
+					this.initOpts.origCollection = this.initOpts.collection.clone();
+				}
+
+				this.initOpts.collection.reset();
+				this.initOpts.collection.add(this.initOpts.origCollection.filter(this.initOpts.listFilter));// collection filter
+				
+				var listView = new CarsList(this.initOpts);
+				var paginatorView = new Paginator(this.initOpts);
+				paginatorView.currentPage = +!this.paginator.currentView || this.paginator.currentView.currentPage;
+			
+				listView.filter = paginatorView.paginatorFilter(); // page filter
+
+				this.list.show(listView);
+				this.paginator.show(paginatorView);
 			},
 
 			onButtonClick: function(e){

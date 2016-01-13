@@ -11,13 +11,13 @@ define([
 			},
 
 			// Backbone.Collection.comparator compatible
-			collectionComparator: function(car1, car2){
-				return car1.compare(this, car2);
+			collectionComparator: function(item1, item2){
+				return item1.compare(this, item2);
 			},
 
 			// _.filter() compatible
-			viewFilter: function (car, index, collection) {
-				return car.filter(this);
+			viewFilter: function (item, index, collection) {
+				return item.filter(this);
 			}
 		});
 

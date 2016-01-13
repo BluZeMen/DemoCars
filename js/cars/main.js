@@ -63,10 +63,7 @@ define([
 				view.on('sort:za', wrapSort('za'));
 				view.on('sort:query', controller.queryStringChange);
 
-				// paginator
-				view.on('childview:paginator:next', controller.paginatorNext);
-				view.on('childview:paginator:prev', controller.paginatorPrev);
-				view.on('childview:paginator:goto', controller.paginatorGoto);
+				view.on('childview:paginator:change', controller.listCars);
 			});
 
 			

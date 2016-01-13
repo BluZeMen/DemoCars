@@ -12,19 +12,16 @@ define([
 
 		var carsList = new collections.CarsList();   // main container, contains all cars
 		var displayList = new collections.CarsList();   // contains diaplayable cars 
-		var currentPage = 1;  // state of app: number of displayable page 
 		var carsPerPage = 4;  // config, cars per page 
 		var pagesCnt; // total count of pages
 		var query = new models.Query();
 		carsList.comparator = _.bind(query.collectionComparator, query);
 
 		query.on('change:order', function(){
-			console.log('on order change')
 			controller.listCars();
 		});
 
 		query.on('change:string', function(){
-			console.log('on query string change')
 			controller.listCars();
 		});
 
@@ -37,38 +34,16 @@ define([
 			carsList.invoke('save');
 		}
 
-		var getPagesCnt = function(total, perPage){
-			var pagesCnt = total / perPage >> 0;
-			if(total % perPage){ // if page owerflow 
-				pagesCnt++;
-			}
-			return pagesCnt;
-		}
-
 		var controller = {
 
 			listCars: function(){
 				carsList.fetch({success: function(){
-					// pagination
-					pagesCnt = getPagesCnt(carsList.length, carsPerPage);
-
-					var filtred = carsList.filter(_.bind(query.viewFilter, query));
-					if(query.get('string')){
-						pagesCnt = getPagesCnt(filtred.length, carsPerPage);
-						if(currentPage >= pagesCnt){
-							currentPage = 1;
-						}
-					}
 
 					var viewOptions = {
-						collection : displayList,
-						currentPage: currentPage,
-						pagesCnt: pagesCnt,
+						listFilter: _.bind(query.viewFilter, query),
+						collection : carsList,
+						itemsPerPage: carsPerPage,
 					};
-					
-					displayList.reset();
-					displayList.add(filtred.slice((currentPage-1)*carsPerPage, currentPage*carsPerPage));
-					// viewing 
 					
 					if(appMain.regions.main.currentView){
 						appMain.regions.main.currentView.updateList(viewOptions);
@@ -76,7 +51,6 @@ define([
 						var view = new views.QueriedCarsList(viewOptions);
 						appMain.regions.main.show(view);
 					}
-					//appMain.regions.main.currentView.setListFilter(viewFilter);
 				}});
 				appMain.execute("set:active:header", "/");
 			},
@@ -90,23 +64,7 @@ define([
 			},
 
 			queryStringChange: function( str){
-				console.log('qs new val:', str);
 				query.set('string', str);
-			},
-
-			paginatorGoto: function(view, page){
-				currentPage = page;
-				controller.listCars();
-			},
-
-			paginatorNext: function(){
-				if(currentPage < pagesCnt) currentPage++;
-				controller.listCars();
-			},
-
-			paginatorPrev: function(){
-				if(currentPage > 1) currentPage--;
-				controller.listCars();
 			},
 
 			showCar: function(id){
