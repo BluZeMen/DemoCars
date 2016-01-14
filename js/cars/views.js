@@ -157,11 +157,13 @@ define([
 				if(opts){
 					this.initOpts = opts;
 				}
-
+				
+				// clone original collection for usage in future
 				if(!this.initOpts.origCollection){
 					this.initOpts.origCollection = this.initOpts.collection.clone();
 				}
-
+				
+				// replacing view collection items by items of page
 				this.initOpts.collection.reset();
 				this.initOpts.collection.add(this.initOpts.origCollection.filter(this.initOpts.listFilter));// collection filter
 				
