@@ -45,7 +45,7 @@ define([
 						itemsPerPage: carsPerPage,
 					};
 					
-					if(appMain.regions.main.currentView){
+					if(appMain.regions.main.currentView && appMain.regions.main.currentView.updateList){
 						appMain.regions.main.currentView.updateList(viewOptions);
 					}else{
 						var view = new views.QueriedCarsList(viewOptions);
